@@ -1,0 +1,8 @@
+{
+    "computational_asset_type": "edge",
+    "id": "AI4Europe_765987",
+    "name": "telenor_tromso_2",
+    "owner": "Telenor Norway",
+    "location": "69.7187, 19.1286",
+    "5G_cellular_network_latency_ms": "9"
+}

@@ -11,8 +11,9 @@ The Python script takes 3 positional arguments:
 __url user password__
 
 Where __url__ is the redfish url (e.g., https://172.20.20.20), __user__ is the admin user for redfish (e.g. Administrator), and __password__ is the admin user password (e.g. LMDT64WK)
-Example run command:
-_python3 redfish-get-cpu-info.py https://172.20.20.20 Administrator LMDT64WK_
+
+##Example run command:
+_python redfish-get-cpu-info.py https://172.20.20.20 Administrator LMDT64WK_
 
 When I run this on my HPE Gen 10 server I get this json formatted output:
 ```

@@ -10,7 +10,7 @@ _pip install redfish_
 The Python script takes 3 positional arguments:
 __url user password__
 
-Where url is the redfish url (e.g., https://172.20.20.20), user is the admin user for redfish (e.g. Administrator), and password is the admin user password (e.g. LMDT64WK)
+Where __url__ is the redfish url (e.g., https://172.20.20.20), __user__ is the admin user for redfish (e.g. Administrator), and __password__ is the admin user password (e.g. LMDT64WK)
 Example run command:
 _python3 redfish-get-cpu-info.py https://172.20.20.20 Administrator LMDT64WK_
 

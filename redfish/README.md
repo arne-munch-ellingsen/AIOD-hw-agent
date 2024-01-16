@@ -1,12 +1,12 @@
-H1 DMTF Redfish example implementation
+# DMTF Redfish example implementation
 This folder includes examples on how to collect HW info using [DMTF Redfish standard] (https://www.dmtf.org/standards/redfish) in a python program.
 
-H2 Installation
+## Installation
 In order to use redfish in a python program, the redfish library needs to me installed:
 
 _pip install redfish_
 
-H2 Run the script
+## Run the script
 The Python script takes 3 positional arguments:
 _python redfish_hardware_agent.py url user password_
 

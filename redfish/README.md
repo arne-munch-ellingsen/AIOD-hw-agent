@@ -8,7 +8,7 @@ _pip install redfish_
 
 ## Run the script
 The Python script takes 3 positional arguments:
-_python redfish_hardware_agent.py url user password_
+__url user password__
 
 Where url is the redfish url (e.g., https://172.20.20.20), user is the admin user for redfish (e.g. Administrator), and password is the admin user password (e.g. LMDT64WK)
 Example run command:

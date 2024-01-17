@@ -13,7 +13,7 @@ __url user password__
 Where __url__ is the redfish url (e.g., `https://172.20.20.20`), __user__ is the admin user for redfish (e.g. Administrator), and __password__ is the admin user password (e.g. LMDT64WK)
 
 ## Example run command:
-__*python redfish-get-cpu-info.py `https://172.20.20.20` Administrator LMDT64WK*__
+`__*python redfish-get-cpu-info.py https://172.20.20.20 Administrator LMDT64WK*__`
 
 When I run this on my HPE Gen 10 server I get this json formatted output (Note that even more details about the server is available using Redfish, this is just an example):
 ```

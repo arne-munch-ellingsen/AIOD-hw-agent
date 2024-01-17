@@ -15,7 +15,7 @@ Where __url__ is the redfish url (e.g., https://172.20.20.20), __user__ is the a
 ## Example run command:
 _python redfish-get-cpu-info.py https://172.20.20.20 Administrator LMDT64WK_
 
-When I run this on my HPE Gen 10 server I get this json formatted output:
+When I run this on my HPE Gen 10 server I get this json formatted output (Note that even more details about the server is available using Redfish, this is just an example):
 ```
 {
     "CPUs": {

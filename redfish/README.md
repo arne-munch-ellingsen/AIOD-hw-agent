@@ -2,7 +2,7 @@
 This folder includes examples on how to collect HW info using [DMTF Redfish standard] (https://www.dmtf.org/standards/redfish) in a python program.
 
 ## Installation
-In order to use redfish in a python program, the redfish library needs to me installed:
+In order to use redfish in a python program, the redfish library needs to be installed:
 
 _pip install redfish_
 

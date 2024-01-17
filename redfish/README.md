@@ -4,7 +4,7 @@ This folder includes examples on how to collect HW info using [DMTF Redfish stan
 ## Installation
 In order to use redfish in a python program, the redfish library needs to be installed:
 
-_pip install redfish_
+__*pip install redfish*__
 
 ## Run the script
 The Python script takes 3 positional arguments:
@@ -13,7 +13,7 @@ __url user password__
 Where __url__ is the redfish url (e.g., https://172.20.20.20), __user__ is the admin user for redfish (e.g. Administrator), and __password__ is the admin user password (e.g. LMDT64WK)
 
 ## Example run command:
-_python redfish-get-cpu-info.py https://172.20.20.20 Administrator LMDT64WK_
+__*python redfish-get-cpu-info.py https://172.20.20.20 Administrator LMDT64WK*__
 
 When I run this on my HPE Gen 10 server I get this json formatted output (Note that even more details about the server is available using Redfish, this is just an example):
 ```

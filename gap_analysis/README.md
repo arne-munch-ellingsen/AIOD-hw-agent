@@ -7,3 +7,5 @@ The file [hw_agent_metadata_model.json](https://github.com/arne-munch-ellingsen/
 The file [node_feature_discovery.json](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/blob/main/gap_analysis/node_feature_discovery.json) contains the default node feature discovery model after the NVIDIA GPU operator has been deployed to the microk8s Kubernetes cluster that we are using for the experimentation.
 
 The comparison between the two files will show the gaps.
+
+As a start, the file [hw_agent_metadatamodel_with_values_from_node_labels.json](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/blob/main/gap_analysis/hw_agent_metadatamodel_with_values_from_node_labels.json) is a representation of the HW agent metadata with values taken from NFD labels. Emty values identifies the gaps.

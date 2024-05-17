@@ -1,0 +1,47 @@
+{
+  "computational_asset": {
+    "General_properties": {
+      "id": "",
+      "name": "",
+      "geographical_location": "",
+      "description": "",
+      "owner": "",
+      "pricing_schema": "",
+      "underlying_orchestrating_technology": "",
+      "kernel": "",
+      "operating_system": ""
+    },
+    "HW_Technical_properties": {
+      "cache_l1_l": "",
+      "num_cores": "",
+      "architecture": "",
+      "vendor": "",
+      "model_name": "",
+      "Accelerator": {
+        "type": "",
+        "computation_framework_supported": "",
+        "memory_size_GB": ""
+      },
+      "Network": {
+        "latency": "",
+        "bandwith_Mbps": "",
+        "topology": ""
+      },
+      "Storage": {
+        "model": "",
+        "vendor": "",
+        "capacity_GB": "",
+        "type": "",
+        "read_bandwith_MBps": "",
+        "write_bandwith_MBps": "",
+        "data_transfer_mechanisms": ""
+      },
+      "Memory": {
+        "type": "",
+        "size_GB": "",
+        "bandwith_GBps": "",
+        "RDMA": ""
+      }
+    }
+  }
+}

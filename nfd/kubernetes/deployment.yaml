@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nfd-labeler-sa
+  namespace: default
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: nfd-labeler
+rules:
+  - apiGroups: [""]
+    resources: ["nodes"]
+    verbs: ["patch"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: nfd-labeler-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nfd-labeler
+subjects:
+  - kind: ServiceAccount
+    name: nfd-labeler-sa
+    namespace: default
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfd-labeler
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfd-labeler
+  template:
+    metadata:
+      labels:
+        app: nfd-labeler
+    spec:
+      serviceAccountName: nfd-labeler-sa
+      containers:
+        - name: nfd-labeler
+          image: nfd-labeler:latest
+          imagePullPolicy: IfNotPresent

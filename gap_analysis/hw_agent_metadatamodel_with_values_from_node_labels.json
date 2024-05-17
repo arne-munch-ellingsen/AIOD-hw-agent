@@ -1,7 +1,7 @@
 {
   "computational_asset": {
     "General_properties": {
-      "id": "4a4519a6907845ef9b418221b53b6eb6",
+      "id": "",
       "name": "odin",
       "geographical_location": "",
       "description": "",
@@ -20,7 +20,7 @@
       "Accelerator": {
         "type": "NVIDIA-GeForce-GTX-1080-Ti",
         "computation_framework_supported": "",
-        "memory_size_GB": "11264"
+        "memory_size_GB": "112"
       },
       "Network": {
         "latency": "",
@@ -30,7 +30,7 @@
       "Storage": {
         "model": "",
         "vendor": "",
-        "capacity_GB": "102626232",
+        "capacity_GB": "1024",
         "type": "",
         "read_bandwith_MBps": "",
         "write_bandwith_MBps": "",
@@ -38,7 +38,7 @@
       },
       "Memory": {
         "type": "",
-        "size_GB": "263997836",
+        "size_GB": "264",
         "bandwith_GBps": "",
         "RDMA": ""
       }

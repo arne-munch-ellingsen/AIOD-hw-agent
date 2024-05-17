@@ -1,34 +1,61 @@
 import json
 
-# Load the JSON data from files
-with open('hw_agent_metadata_model.json') as f:
-    first_json = json.load(f)
+# Function to read JSON data from a file
+def read_json_from_file(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
 
-with open('node_feature_discovery.json') as f:
-    second_json = json.load(f)
+# Function to write JSON data to a file
+def write_json_to_file(data, file_path):
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=2)
 
-# Extract relevant data from the second JSON
-second_json_item = second_json['items'][0]
+# Function to merge JSON data
+def merge_json(json1, json2):
+    node = json2['items'][0]
+    node_status = node['status']
+    node_info = node_status['nodeInfo']
+    
+    # General properties
+    json1['computational_asset']['General_properties']['name'] = node['metadata']['name']
+    json1['computational_asset']['General_properties']['geographical_location'] = node_status['addresses'][0]['address']
+    json1['computational_asset']['General_properties']['kernel'] = node_info['kernelVersion']
+    json1['computational_asset']['General_properties']['operating_system'] = node_info['osImage']
+    
+    # CPU properties
+    json1['computational_asset']['HW_Technical_properties']['CPU']['num_cpus'] = int(node_status['capacity']['cpu'])
+    json1['computational_asset']['HW_Technical_properties']['CPU']['architecture'] = node_info['architecture']
+    json1['computational_asset']['HW_Technical_properties']['CPU']['vendor'] = node['metadata']['labels']['feature.node.kubernetes.io/cpu-model.vendor_id']
+    json1['computational_asset']['HW_Technical_properties']['CPU']['cpu_family'] = node['metadata']['labels']['feature.node.kubernetes.io/cpu-model.family']
+    
+    # Accelerator properties
+    json1['computational_asset']['HW_Technical_properties']['Accelerator']['type'] = node['metadata']['labels']['nvidia.com/gpu.product']
+    json1['computational_asset']['HW_Technical_properties']['Accelerator']['memory_size_GB'] = node['metadata']['labels']['nvidia.com/gpu.memory']
+    
+    # Memory properties
+    memory_kib = int(node_status['capacity']['memory'].replace('Ki', ''))
+    json1['computational_asset']['HW_Technical_properties']['Memory']['size_GB'] = str(memory_kib // 1024)
+    
+    # Storage properties
+    storage_kib = int(node_status['capacity']['ephemeral-storage'].replace('Ki', ''))
+    json1['computational_asset']['HW_Technical_properties']['Storage']['capacity_GB'] = str(storage_kib // 1024)
+    
+    return json1
 
-# Merge data into the first JSON
-first_json['computational_asset']['General_properties']['name'] = second_json_item['metadata']['name']
-first_json['computational_asset']['General_properties']['kernel'] = second_json_item['status']['nodeInfo']['kernelVersion']
-first_json['computational_asset']['General_properties']['operating_system'] = second_json_item['status']['nodeInfo']['osImage']
-first_json['computational_asset']['General_properties']['geographical_location'] = second_json_item['metadata']['annotations']['projectcalico.org/IPv4Address']
+# File paths
+file_path_1 = 'hw_agent_metadata_model.json'
+file_path_2 = 'node_feature_discovery.json'
+output_file_path = 'merged_json_file.json'
 
-first_json['computational_asset']['HW_Technical_properties']['num_cores'] = second_json_item['status']['capacity']['cpu']
-first_json['computational_asset']['HW_Technical_properties']['architecture'] = second_json_item['status']['nodeInfo']['architecture']
-first_json['computational_asset']['HW_Technical_properties']['vendor'] = second_json_item['metadata']['labels']['feature.node.kubernetes.io/cpu-model.vendor_id']
-first_json['computational_asset']['HW_Technical_properties']['Network']['latency'] = second_json_item['metadata']['annotations'].get('network-latency', '')
-first_json['computational_asset']['HW_Technical_properties']['Network']['bandwith_Mbps'] = second_json_item['metadata']['annotations'].get('network-bandwidth', '')
+# Read JSON data from files
+json_data_1 = read_json_from_file(file_path_1)
+json_data_2 = read_json_from_file(file_path_2)
 
-first_json['computational_asset']['HW_Technical_properties']['Accelerator']['type'] = second_json_item['metadata']['labels'].get('nvidia.com/gpu.product', '')
-first_json['computational_asset']['HW_Technical_properties']['Accelerator']['memory_size_GB'] = str(int(second_json_item['metadata']['labels'].get('nvidia.com/gpu.memory', '0')) / 1024)
+# Merge JSON data
+merged_json = merge_json(json_data_1, json_data_2)
 
-first_json['computational_asset']['HW_Technical_properties']['Memory']['size_GB'] = str(int(second_json_item['status']['capacity']['memory'].replace('Ki', '')) / (1024 ** 2))
+# Write merged JSON data to a file
+write_json_to_file(merged_json, output_file_path)
 
-# Write the merged data back to the file
-with open('merged.json', 'w') as f:
-    json.dump(first_json, f, indent=2)
-
-print("Merge completed successfully.")
+# Print merged JSON data
+print(json.dumps(merged_json, indent=2))

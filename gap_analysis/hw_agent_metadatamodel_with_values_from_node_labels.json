@@ -2,25 +2,36 @@
   "computational_asset": {
     "General_properties": {
       "id": "",
-      "name": "odin",
+      "name": "",
       "geographical_location": "",
       "description": "",
       "owner": "",
       "pricing_schema": "",
       "underlying_orchestrating_technology": "",
       "kernel": "5.15.0-101-generic",
-      "operating_system": "linux"
+      "operating_system": "Ubuntu 22.04.4 LTS"
     },
     "HW_Technical_properties": {
-      "cache_l1_l": "",
-      "num_cores": "40",
-      "architecture": "amd64",
-      "vendor": "Intel",
-      "model_name": "79",
+      "CPU": {
+        "num_cpus": 40,
+        "num_cpu_cores": null,
+        "architecture": "amd64",
+        "vendor": "Intel",
+        "model_name": "",
+        "cpu_family": "6",
+        "clock_speed": null,
+        "Cache": {
+          "cache_L1": null,
+          "cache_L2": null,
+          "cache_L3": null,
+          "cache_L1_D": null,
+          "cache_L1_I": null
+        }
+      },
       "Accelerator": {
         "type": "NVIDIA-GeForce-GTX-1080-Ti",
         "computation_framework_supported": "",
-        "memory_size_GB": "112"
+        "memory_size_GB": "11"
       },
       "Network": {
         "latency": "",
@@ -30,7 +41,7 @@
       "Storage": {
         "model": "",
         "vendor": "",
-        "capacity_GB": "1024",
+        "capacity_GB": "102",
         "type": "",
         "read_bandwith_MBps": "",
         "write_bandwith_MBps": "",

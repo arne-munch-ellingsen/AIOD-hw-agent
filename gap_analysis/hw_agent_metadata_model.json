@@ -27,6 +27,7 @@
         "cache_L1_D": null,
         "cache_L1_I": null
       }
+      },
       "Accelerator": {
         "type": "",
         "computation_framework_supported": "",

@@ -1,10 +1,10 @@
 import json
 
 # Load the JSON data from files
-with open('first.json') as f:
+with open('hw_agent_metadata_model.json') as f:
     first_json = json.load(f)
 
-with open('second.json') as f:
+with open('node_feature_discovery.json') as f:
     second_json = json.load(f)
 
 # Extract relevant data from the second JSON

@@ -12,11 +12,21 @@
       "operating_system": ""
     },
     "HW_Technical_properties": {
-      "cache_l1_l": "",
-      "num_cores": "",
-      "architecture": "",
-      "vendor": "",
-      "model_name": "",
+      "CPU": {
+      "num_cpus": null,
+      "num_cpu_cores": null,
+      "architecture": null,
+      "vendor": null,
+      "model_name": null,
+      "cpu_family": null,
+      "clock_speed": null,
+      "Cache": {
+        "cache_L1": null,
+        "cache_L2": null,
+        "cache_L3": null,
+        "cache_L1_D": null,
+        "cache_L1_I": null
+      }
       "Accelerator": {
         "type": "",
         "computation_framework_supported": "",

@@ -1,0 +1,47 @@
+{
+  "computational_asset": {
+    "General_properties": {
+      "id": "4a4519a6907845ef9b418221b53b6eb6",
+      "name": "odin",
+      "geographical_location": "",
+      "description": "",
+      "owner": "",
+      "pricing_schema": "",
+      "underlying_orchestrating_technology": "",
+      "kernel": "5.15.0-101-generic",
+      "operating_system": "linux"
+    },
+    "HW_Technical_properties": {
+      "cache_l1_l": "",
+      "num_cores": "40",
+      "architecture": "amd64",
+      "vendor": "Intel",
+      "model_name": "79",
+      "Accelerator": {
+        "type": "NVIDIA-GeForce-GTX-1080-Ti",
+        "computation_framework_supported": "",
+        "memory_size_GB": "11264"
+      },
+      "Network": {
+        "latency": "",
+        "bandwith_Mbps": "",
+        "topology": ""
+      },
+      "Storage": {
+        "model": "",
+        "vendor": "",
+        "capacity_GB": "102626232",
+        "type": "",
+        "read_bandwith_MBps": "",
+        "write_bandwith_MBps": "",
+        "data_transfer_mechanisms": ""
+      },
+      "Memory": {
+        "type": "",
+        "size_GB": "263997836",
+        "bandwith_GBps": "",
+        "RDMA": ""
+      }
+    }
+  }
+}

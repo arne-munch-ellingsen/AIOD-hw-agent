@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfd-cpu-labeler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nfd-cpu-labeler
+  template:
+    metadata:
+      labels:
+        app: nfd-cpu-labeler
+    spec:
+      containers:
+      - name: nfd-cpu-labeler
+        image: local/nfd-cpu-labeler:latest
+        imagePullPolicy: Never
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        volumeMounts:
+        - name: host-etc
+          mountPath: /etc/hostname
+          readOnly: true
+      volumes:
+      - name: host-etc
+        hostPath:
+          path: /etc/hostname

@@ -23,7 +23,7 @@ In the **General_properties** part of the HW agen model, only the "kernel" and t
 
 In the **"HW_Technical_properties" "CPU"** section, most info can be filled in, except for the *cache* part and *cpu clock_speed*, *num_cpus* and *model name*.
 
-In the **"HW_Technical_properties" Accelerator** section all parts can be filled in (assuming that *computation_framework_supported* can be deduced to be *cuda*.
+In the **"HW_Technical_properties" Accelerator** section all parts can be filled in (assuming that *computation_framework_supported* can be deduced to be *cuda*. ${\color{red}NB:}$ **Note that the HW agent metadata model is itself missing a num_gpus key**.
 
 In the **"HW_Technical_properties" "Network"** section everything is missing.
 

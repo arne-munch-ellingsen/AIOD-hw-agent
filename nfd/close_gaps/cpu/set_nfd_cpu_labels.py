@@ -51,12 +51,17 @@ def load_k8s_config():
 
 def set_node_labels(node_name, labels):
     v1 = client.CoreV1Api()
-    body = {
-        "metadata": {
-            "labels": labels
-        }
-    }
     try:
+        node = v1.read_node(node_name)
+        existing_labels = node.metadata.labels
+        if existing_labels is None:
+            existing_labels = {}
+        existing_labels.update(labels)
+        body = {
+            "metadata": {
+                "labels": existing_labels
+            }
+        }
         v1.patch_node(node_name, body)
         print(f"Successfully set labels {labels} on node {node_name}")
     except ApiException as e:

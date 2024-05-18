@@ -32,7 +32,7 @@
         "num_cores": "",
         "architecture": "",
         "vendor": "",
-        "model_name"; "",
+        "model_name": "",
         "type": "",
         "computation_framework_supported": "",
         "memory_size_GB": ""

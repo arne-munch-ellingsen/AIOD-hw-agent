@@ -4,6 +4,8 @@ This folder contains an example kubernetes app (pod) that retireves the missing 
 * CPU model name
 * CPU clockspeed
 
+and sets appropriate NFD labels reflecting the retrieved valus.
+
 ## Build and deploy the app
 ```
 # Build container and import into microk8s containerd

@@ -9,3 +9,6 @@ THe kubernetes folder contains example programs that runs in the kubernetes clus
 
 ## gap_analysis folder
 This folder cotains stuff related to identifying the gap between what the default Node Feature Discovery labels can´t populate in the HW agent metadata model.
+
+## close_gaps folder
+This folder contains example kubernetes containerized apps that retrieves missing values and sets the corresponding aiod NFD label. It will contain supfolders reflecting the section of the HW agent metadata model the example apps relates to.

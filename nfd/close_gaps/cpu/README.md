@@ -3,6 +3,7 @@ This folder contains an example kubernetes app (pod) that retireves the missing 
 * number of physical cpus
 * CPU model name
 * CPU clockspeed
+* Cache sizes for CPU caches: cache_L1, cache_L1_D, cache_L1_I, cache_L2, cache_L3
 
 and sets appropriate NFD labels reflecting the retrieved valus.
 

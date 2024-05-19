@@ -25,6 +25,6 @@ In the **"HW_Technical_properties" "CPU"** section, most info can be filled in, 
 
 In the **"HW_Technical_properties" Accelerator** section all parts can be filled in (assuming that *computation_framework_supported* can be deduced to be *cuda*. ${\color{red}NB:}$ **Note that the HW agent metadata model is itself missing a num_gpus key**.
 
-In the **"HW_Technical_properties" "Network"** section everything is missing.
+In the **"HW_Technical_properties" "Network"** section everything is missing. Not sure if the network section is about intra GPU networks or something else? Is it related to Infiniband/RDMA?
 
-In the **"HW_Technical_properties" "Storage" and "Memory"** section everything except the sizes are missing.
+In the **"HW_Technical_properties" "Storage" and "Memory"** section everything except the sizes are missing. Not sure if the Memory section is about CPU or GPU memory? Most likely GPU since RDMA is mentioned?

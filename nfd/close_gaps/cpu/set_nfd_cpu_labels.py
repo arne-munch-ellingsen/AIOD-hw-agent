@@ -1,9 +1,40 @@
 import psutil
 import re
+import subprocess
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 
 LABEL_VALUE_PATTERN = re.compile(r'(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])?')
+
+def get_cache_info():
+    cache_info = {}
+    try:
+        # Get the full output from lscpu
+        lscpu_output = subprocess.check_output("lscpu", shell=True).decode()
+        
+        # Regex patterns for matching cache sizes
+        patterns = {
+            "cache_L1_D": r"L1d cache:\s+(\d+\s*[KMG]B?)",
+            "cache_L1_I": r"L1i cache:\s+(\d+\s*[KMG]B?)",
+            "cache_L2": r"L2 cache:\s+(\d+\s*[KMG]B?)",
+            "cache_L3": r"L3 cache:\s+(\d+\s*[KMG]B?)"
+        }
+        
+        # Extract cache sizes using regex patterns
+        for cache_name, pattern in patterns.items():
+            match = re.search(pattern, lscpu_output)
+            if match:
+                cache_info[cache_name] = match.group(1).replace(" ", "")
+        
+        # Combine L1 Data and Instruction cache sizes for total L1 cache size
+        if "cache_L1_D" in cache_info and "cache_L1_I" in cache_info:
+            l1_d_size = int(cache_info["cache_L1_D"][:-1])  # remove unit and convert to int
+            l1_i_size = int(cache_info["cache_L1_I"][:-1])  # remove unit and convert to int
+            cache_info["cache_L1"] = f"{l1_d_size + l1_i_size}K"
+    except Exception as e:
+        print(f"Error retrieving cache information: {e}")
+    
+    return cache_info
 
 def get_cpu_info():
     cpu_model_name = None
@@ -69,19 +100,23 @@ def set_node_labels(node_name, labels):
 
 def set_nfd_labels():
     cpu_model_name, cpu_clockspeed = get_cpu_info()
-
+    cache_info = get_cache_info()
     # Format the clock speed as a label value
     cpu_clockspeed_label = f"{cpu_clockspeed:.0f}MHz" if cpu_clockspeed is not None else "unknown"
     print(f"num_cpus={format_label_value(str(count_physical_cpus()))}")
     print(f"cpu_model_name={format_label_value(cpu_model_name)}")
     print(f"cpu_clockspeed_label={format_label_value(cpu_clockspeed_label)}")
-    
-    # Define the labels
+    for cache_name, cache_size in cache_info.items():
+        print(f"ai4europe.aiod/{cache_name}={cache_size}")
+    # Define the cpu labels
     labels = {
         "ai4europe.aiod/num_cpus": format_label_value(str(count_physical_cpus())),
         "ai4europe.aiod/cpu_model_name": format_label_value(cpu_model_name),
         "ai4europe.aiod/cpu_clockspeed": format_label_value(cpu_clockspeed_label)
     }
+    # Add the cache labels
+    for cache_name, cache_size in cache_info.items():
+        labels[f"ai4europe.aiod/{cache_name}"] = cache_size
 
     load_k8s_config()
     node_name = open("/etc/hostname").read().strip()

@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives import hashes
 import base64
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding as asym_padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import padding as sym_padding
 import json
 
 app = Flask(__name__)
@@ -61,22 +64,37 @@ def receive_k8s_credentials():
 
     try:
         data = request.get_json()
-        encrypted_credentials_b64 = data.get('credentials')
-        encrypted_credentials = base64.urlsafe_b64decode(encrypted_credentials_b64)
+        encrypted_key_b64 = data.get('encrypted_key')
+        encrypted_blob_b64 = data.get('blob')
 
-        decrypted_credentials = private_key.decrypt(
-            encrypted_credentials,
-            padding.OAEP(
-                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+        encrypted_key = base64.urlsafe_b64decode(encrypted_key_b64)
+        encrypted_blob = base64.urlsafe_b64decode(encrypted_blob_b64)
+
+        iv = encrypted_blob[:16]
+        encrypted_data = encrypted_blob[16:]
+
+        # Decrypt the AES key with the private RSA key
+        decrypted_aes_key = private_key.decrypt(
+            encrypted_key,
+            asym_padding.OAEP(
+                mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
                 algorithm=hashes.SHA256(),
                 label=None
             )
         )
 
-        k8s_credentials = json.loads(decrypted_credentials.decode())
+        # Decrypt the text blob using the decrypted AES key
+        cipher = Cipher(algorithms.AES(decrypted_aes_key), modes.CFB(iv), backend=default_backend())
+        decryptor = cipher.decryptor()
+        padded_data = decryptor.update(encrypted_data) + decryptor.finalize()
 
-        # Securely store the Kubernetes credentials (e.g., in a secrets manager, this is just a mock-up)
-        store_k8s_credentials(k8s_credentials)
+        # Unpad the decrypted data
+        unpadder = sym_padding.PKCS7(algorithms.AES.block_size).unpadder()
+        decrypted_data = unpadder.update(padded_data) + unpadder.finalize()
+        decrypted_text = decrypted_data.decode()
+
+        # Securely store the decrypted text blob
+        store_k8s_credentials(decrypted_text)
 
         return jsonify({'status': 'success'}), 200
     except Exception as e:

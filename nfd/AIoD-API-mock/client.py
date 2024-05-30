@@ -1,9 +1,13 @@
 import requests
 import json
 import base64
+import os
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.asymmetric import padding as asym_padding
 from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import padding as sym_padding
 
 # Load the public key
 with open("public_key.pem", "rb") as public_key_file:
@@ -72,28 +76,42 @@ comp_asset_payload = {
     })
 }
 
-# Define the Kubernetes credentials
-k8s_credentials = {
-    'api_server': 'https://my-k8s-cluster.example.com',
-    'user': 'aiod-user',
-    'token': 'example-k8s-token'
-}
+# Read the text blob from a file
+with open("aiod-cluster-config", "r") as text_blob_file:
+    text_blob = text_blob_file.read()
 
-# Encrypt the Kubernetes credentials
-credentials_json = json.dumps(k8s_credentials).encode()
-encrypted_credentials = public_key.encrypt(
-    credentials_json,
-    padding.OAEP(
-        mgf=padding.MGF1(algorithm=hashes.SHA256()),
+# Generate a random AES key
+aes_key = os.urandom(32)  # AES-256 key
+
+# Encrypt the text blob using AES
+iv = os.urandom(16)  # AES block size is 16 bytes
+cipher = Cipher(algorithms.AES(aes_key), modes.CFB(iv), backend=default_backend())
+encryptor = cipher.encryptor()
+
+# Pad the data to be a multiple of the block size
+padder = sym_padding.PKCS7(algorithms.AES.block_size).padder()
+padded_data = padder.update(text_blob.encode()) + padder.finalize()
+
+# Encrypt the padded data
+encrypted_blob = encryptor.update(padded_data) + encryptor.finalize()
+
+# Encrypt the AES key with the RSA public key
+encrypted_key = public_key.encrypt(
+    aes_key,
+    asym_padding.OAEP(
+        mgf=asym_padding.MGF1(algorithm=hashes.SHA256()),
         algorithm=hashes.SHA256(),
         label=None
     )
 )
-encrypted_credentials_b64 = base64.urlsafe_b64encode(encrypted_credentials).decode()
+
+# Encode the encrypted blob and key in base64
+encrypted_blob_b64 = base64.urlsafe_b64encode(iv + encrypted_blob).decode()
+encrypted_key_b64 = base64.urlsafe_b64encode(encrypted_key).decode()
 
 # Define the URL and headers for the POST requests
 comp_asset_url = 'https://127.0.0.1:5003/computational_asset'
-k8s_url = 'https://127.0.0.1:5003/receive_k8s_credentials'
+credential_url = 'https://127.0.0.1:5003/receive_k8s_credentials'
 headers = {'Authorization': 'Bearer your-auth-token'}
 
 # Send the POST request for computational_asset
@@ -103,12 +121,15 @@ comp_asset_response = requests.post(comp_asset_url, json=comp_asset_payload, hea
 print("Computational Asset Status Code:", comp_asset_response.status_code)
 print("Computational Asset Response JSON:", comp_asset_response.json())
 
-# Define the payload for the Kubernetes credentials
-k8s_payload = {'credentials': encrypted_credentials_b64}
+# Define the payload for the encrypted text blob
+blob_payload = {
+    'encrypted_key': encrypted_key_b64,
+    'blob': encrypted_blob_b64
+}
 
-# Send the POST request for the Kubernetes credentials
-k8s_response = requests.post(k8s_url, json=k8s_payload, headers=headers, verify='cert.pem')
+# Send the POST request for the encrypted text blob
+blob_response = requests.post(credential_url, json=blob_payload, headers=headers, verify='cert.pem')
 
-# Print the Kubernetes credentials response
-print("Kubernetes Credentials Status Code:", k8s_response.status_code)
-print("Kubernetes Credentials Response JSON:", k8s_response.json())
+# Print the encrypted text blob response
+print("Encrypted Blob Status Code:", blob_response.status_code)
+print("Encrypted Blob Response JSON:", blob_response.json())

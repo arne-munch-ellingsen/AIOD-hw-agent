@@ -10,3 +10,7 @@ To start the Flask App that simulates the AIoD API:
 To stop a running instance:
 
 ```docker compose down```
+
+To test it, simply run the test script (make sure it has execution rights (e.g. **chmod +x test.sh**):
+
+```./test.sh```

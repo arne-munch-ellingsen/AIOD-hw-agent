@@ -56,7 +56,7 @@ def computational_asset():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/receive_k8s_credentials', methods=['POST'])
+@app.route('/k8s_credentials', methods=['POST'])
 def receive_k8s_credentials():
     auth_header = request.headers.get('Authorization')
     if not auth_header or not validate_token(auth_header):

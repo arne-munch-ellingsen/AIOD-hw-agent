@@ -4,3 +4,6 @@ services:
     build: .
     ports:
       - "5003:5003"
+    volumes:
+      - ./cert.pem:/app/cert.pem
+      - ./private_key.pem:/app/private_key.pem

@@ -13,11 +13,6 @@ python ./create_keys.py
 
 # Create a self signed certificate (on command line)
 openssl req -x509 -new -nodes -key private_key.pem -sha256 -days 365 -out cert.pem -config openssl.cnf
-
-# On the Kubernetes host create microk8s user and token by running the creation script:
-./create_credentials.sh
-
-# NB: Copy the displayed token into the client.py program (substitute the example-k8s-token with the token)
 ```
 
 ## Create the docker image

@@ -15,3 +15,7 @@ To stop a running instance:
 To test it, simply run the test script (make sure it has execution rights (e.g. **chmod +x test.sh**):
 
 ```./test.sh```
+
+or use the Python client:
+
+```python client.py```

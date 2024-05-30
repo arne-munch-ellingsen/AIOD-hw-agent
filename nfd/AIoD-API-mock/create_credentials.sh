@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+# This script should only be used on the Kubernetes controller host
+#
+
 # Create a service account
 microk8s kubectl create serviceaccount aiod-user
 

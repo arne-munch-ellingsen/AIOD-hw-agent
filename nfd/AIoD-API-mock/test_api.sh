@@ -1,7 +1,0 @@
-#!/bin/bash
-
-curl -X POST http://localhost:5003/computational_asset -H "Content-Type: application/json" -d '{
-    "platform": "telenor",
-    "name": "edge_tromso_1",
-    "description": "{\"General_properties\": {\"id\": \"\",\"name\": \"\",\"geographical_location\": \"\",\"description\": \"\",\"owner\": \"\",\"pricing_schema\": \"\",\"underlying_orchestrating_technology\": \"\",\"kernel\": \"5.15.0-101-generic\",\"operating_system\": \"Ubuntu 22.04.4 LTS\"},\"HW_Technical_properties\": {\"CPU\": {\"num_cpus\": 40,\"num_cpu_cores\": null,\"architecture\": \"amd64\",\"vendor\": \"Intel\",\"model_name\": \"\",\"cpu_family\": \"6\",\"clock_speed\": null,\"Cache\": {\"cache_L1\": null,\"cache_L2\": null,\"cache_L3\": null,\"cache_L1_D\": null,\"cache_L1_I\": null}},\"Accelerator\": {\"type\": \"NVIDIA-GeForce-GTX-1080-Ti\",\"computation_framework_supported\": \"\",\"memory_size_GB\": \"11\"},\"Network\": {\"latency\": \"\",\"bandwith_Mbps\": \"\",\"topology\": \"\"},\"Storage\": {\"model\": \"\",\"vendor\": \"\",\"capacity_GB\": \"102\",\"type\": \"\",\"read_bandwith_MBps\": \"\",\"write_bandwith_MBps\": \"\",\"data_transfer_mechanisms\": \"\"},\"Memory\": {\"type\": \"\",\"size_GB\": \"264\",\"bandwith_GBps\": \"\",\"RDMA\": \"\"}}}"
-}'

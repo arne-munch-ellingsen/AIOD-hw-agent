@@ -111,7 +111,7 @@ encrypted_key_b64 = base64.urlsafe_b64encode(encrypted_key).decode()
 
 # Define the URL and headers for the POST requests
 comp_asset_url = 'https://127.0.0.1:5003/computational_asset'
-credential_url = 'https://127.0.0.1:5003/receive_k8s_credentials'
+credential_url = 'https://127.0.0.1:5003/k8s_credentials'
 headers = {'Authorization': 'Bearer your-auth-token'}
 
 # Send the POST request for computational_asset

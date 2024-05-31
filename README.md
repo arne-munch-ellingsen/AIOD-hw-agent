@@ -1,4 +1,4 @@
-# AIoD infrastructure integretion (a.k.a. AIoD Hardware agent)
+# AIoD infrastructure integration (a.k.a. AIoD Hardware agent)
 The code here represents AI4Europe Task 5.2´s attempt o create mechanisms that can collect information about an AIoD __*computational_asset*__ and send the info to the AIoD platform using the [AIOD-rest-api](https://github.com/aiondemand/AIOD-rest-api/tree/develop).
 
 ## Kubernetes NFD based example

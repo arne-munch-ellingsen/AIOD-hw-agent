@@ -1,5 +1,5 @@
 # Hardware agent
-The code here is a first attempt to create mechanisms that can collect information about an AIoD __*computational_asset*__ and send the info to the AIoD platform using the [AIOD-rest-api](https://github.com/aiondemand/AIOD-rest-api/tree/develop).
+The code here represents AI4Europe Task 5.2´s attempt o create mechanisms that can collect information about an AIoD __*computational_asset*__ and send the info to the AIoD platform using the [AIOD-rest-api](https://github.com/aiondemand/AIOD-rest-api/tree/develop).
 
 ## Kubernetes NFD based example
 The __nfd__ folder contains explorations towards creating a cloud-native (i.e. Kubernetes based) AIoD HW agent. We have concluded that this is the way to go for making cloud native (e.g. Kubernetes based) 5G Edge computing resources available for the AIoD platform.

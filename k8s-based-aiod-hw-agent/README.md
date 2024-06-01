@@ -50,6 +50,7 @@ Deploy the containerised app:
 `microk8s kubectl describe pod <pod-name>`
 `microk8s kubectl logs <pod-name>`
 
-
+**Delete the k8s-aiod-hw-agent deamonset**
+kubectl delete daemonset k8s-aiod-hw-agent-daemonset
 
 

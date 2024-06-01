@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: k8s-aiod-hw-agent-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: k8s-aiod-hw-agent-daemonset
+  template:
+    metadata:
+      labels:
+        app: k8s-aiod-hw-agent-daemonset
+    spec:
+      containers:
+      - name: k8s-aiod-hw-agent-daemonset
+        image: k8s-aiod-hw-agent:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            cpu: 200m
+            memory: 128Mi
+          requests:
+            cpu: 200m
+            memory: 64Mi
+

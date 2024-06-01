@@ -42,12 +42,11 @@ Deploy the containerised app:
 **Remove an image:**
 `microk8s ctr images rm <image-name>:<tag>`
 
-**Delete the nfd-labler images:**
+**Delete the k8s-aiod-hw-agent image:**
 `microk8s ctr images rm docker.io/library/k8s-aiod-hw-agent:latest`
 
-**Get info about the deployed application**
-`microk8s kubectl describe deployment k8s-aiod-hw-agent`
-`microk8s kubectl get pods`
+**Get info about the deployed k8s-aiod-hw-agent deamonset**
+`microk8s kubectl get pods -l app=k8s-aiod-hw-agent-daemonset`
 `microk8s kubectl describe pod <pod-name>`
 `microk8s kubectl logs <pod-name>`
 

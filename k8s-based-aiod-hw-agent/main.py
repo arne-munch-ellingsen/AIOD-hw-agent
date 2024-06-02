@@ -1,6 +1,7 @@
 from kubernetes import client, config
 from kubernetes.client.rest import ApiException
 from computational_asset import metadata_model, ComputationalAssetManager
+from send_asset_and_config import DataEncryptorSender
 from copy import deepcopy
 import json
 import psutil
@@ -29,7 +30,7 @@ def set_node_labels(node_name, labels):
     except ApiException as e:
         print(f"Exception when calling CoreV1Api->patch_node: {e}")
 
-def get_nfd_labels(manager, asset):
+def get_nfd_labels(asset):
     # Retrieve nodes
     v1 = client.CoreV1Api()
     nodes = v1.list_node()
@@ -60,10 +61,7 @@ def get_nfd_labels(manager, asset):
         if not asset['HW_Technical_properties']['Accelerator']['memory_size_GB']:
             asset['HW_Technical_properties']['Accelerator']['memory_size_GB'] = str(int(node.metadata.labels.get("nvidia.com/gpu.memory"))/1024)
 
-        # Add the new asset
-        manager.add_asset(asset)
-
-def get_cache_info(manager, asset):
+def get_cache_info(asset):
     cache_info = {}
     try:
         # Get the full output from lscpu
@@ -97,7 +95,7 @@ def get_cache_info(manager, asset):
             asset['HW_Technical_properties']['CPU']['Cache'][cache_name] = cache_size
 
 
-def get_cpu_info():
+def get_cpu_info(asset):
     cpu_model_name = None
     cpu_clockspeed = None
     
@@ -110,8 +108,12 @@ def get_cpu_info():
             if 'model name' in line:
                 cpu_model_name = line.split(': ')[1].strip()
                 break
-    
-    return cpu_model_name, cpu_clockspeed
+    cpu_clockspeed_label = f"{cpu_clockspeed:.0f}MHz" if cpu_clockspeed is not None else "unknown"
+    if not asset['HW_Technical_properties']['CPU']['model_name']:
+        asset['HW_Technical_properties']['CPU']['model_name'] = convert_cpu_model(cpu_model_name)
+    # Could be that this is current clock speed...
+    if not asset['HW_Technical_properties']['CPU']['clock_speed']:
+        asset['HW_Technical_properties']['CPU']['clock_speed'] = cpu_clockspeed_label
 
 def convert_to_labels(asset):
     labels = {}
@@ -146,22 +148,40 @@ def main():
     node_name = "odin"
     asset_manager = ComputationalAssetManager()
     new_asset = deepcopy(metadata_model)
-    # Get asset values that can be retrieved from the already existing node and NFD labels
-    get_nfd_labels(asset_manager, new_asset)
-    get_cache_info(asset_manager, new_asset)
-    cpu_model_name, cpu_clockspeed = get_cpu_info()
-    cpu_clockspeed_label = f"{cpu_clockspeed:.0f}MHz" if cpu_clockspeed is not None else "unknown"
-    if not new_asset['HW_Technical_properties']['CPU']['model_name']:
-        new_asset['HW_Technical_properties']['CPU']['model_name'] = convert_cpu_model(cpu_model_name)
-    # Could be that this is current clock speed...
-    if not new_asset['HW_Technical_properties']['CPU']['clock_speed']:
-        new_asset['HW_Technical_properties']['CPU']['clock_speed'] = cpu_clockspeed_label
+    # Add the asset template
+    asset_manager.add_asset(new_asset)
+    # Add asset values that can be retrieved from the already existing node and NFD labels
+    get_nfd_labels(new_asset)    
+    # Add the cache_info
+    get_cache_info(new_asset)
+    # Add info about CPU
+    get_cpu_info(new_asset)
     
     labels = convert_to_labels(new_asset)
     print(f"Got these labels: {json.dumps(labels, indent=4)}", flush=True)
-    # set the labels aquired
+    # set the created labels as cluster NFD labels
     print("Setting labels:", flush=True)
+    # If the cluster changes, these labels will change automatically (this is a property of DeamonSet)
     set_node_labels(node_name, labels)
+    # Send the data and cluster config to AIoD
+    print("Encrypt and send asset info to AIoD platform:", flush=True)
+
+    encryptor_sender = DataEncryptorSender(
+        public_key_path="public_key.pem",
+        config_path="aiod-cluster-config", # This is the microk8s config credentials file
+        comp_asset_url='https://129.242.22.51:5003/computational_asset',
+        credential_url='https://129.242.22.51:5003/k8s_credentials',
+        cert_path='cert.pem'
+    )
+    # Add the "mandatory" fields (platform, platform_resource_identifier and name)
+    computational_asset_payload = {
+        "platform": "telenor",
+        "platform_resource_identifier": "2",
+        "name": "edge_tromso_1",
+        "description": json.dumps(new_asset)
+    }
+    
+    encryptor_sender.process_and_send(computational_asset_payload)
 
 if __name__ == "__main__":
     main()

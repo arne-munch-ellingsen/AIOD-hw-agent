@@ -37,18 +37,13 @@ def computational_asset():
         description = json.loads(description_str)
 
         # Extract additional properties from description
-        operating_system = description.get('General_properties', {}).get('operating_system')
-        num_cpus = description.get('HW_Technical_properties', {}).get('CPU', {}).get('num_cpus')
-        accelerator_type = description.get('HW_Technical_properties', {}).get('Accelerator', {}).get('type')
-        print(f"platform={platform}, name={name}, operating_system={operating_system}, num_cpus={num_cpus}, accelerator_type={accelerator_type}", flush=True)
+        print("Received computational_asset:")
+        print(description_str)
 
         # Create a response object
         response = {
             'platform': platform,
-            'name': name,
-            'operating_system': operating_system,
-            'num_cpus': num_cpus,
-            'accelerator_type': accelerator_type
+            'name': name
         }
         print(f"returned json is {jsonify(response)}", flush=True)
         return jsonify(response), 200
@@ -58,15 +53,16 @@ def computational_asset():
 
 @app.route('/k8s_credentials', methods=['POST'])
 def k8s_credentials():
+    print("In receive_k8s_credentials", flush=True)
     auth_header = request.headers.get('Authorization')
     if not auth_header or not validate_token(auth_header):
         return jsonify({'error': 'Unauthorized'}), 401
 
     try:
+        print("In receive_k8s_credentials, get the request data", flush=True)
         data = request.get_json()
         encrypted_key_b64 = data.get('encrypted_key')
         encrypted_blob_b64 = data.get('blob')
-
         encrypted_key = base64.urlsafe_b64decode(encrypted_key_b64)
         encrypted_blob = base64.urlsafe_b64decode(encrypted_blob_b64)
 
@@ -82,7 +78,7 @@ def k8s_credentials():
                 label=None
             )
         )
-
+        print("In receive_k8s_credentials, decrypt the request data", flush=True)
         # Decrypt the text blob using the decrypted AES key
         cipher = Cipher(algorithms.AES(decrypted_aes_key), modes.CFB(iv), backend=default_backend())
         decryptor = cipher.decryptor()

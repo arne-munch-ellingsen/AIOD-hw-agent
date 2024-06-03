@@ -1,7 +1,22 @@
-# Setup microk8s and deploy an application
+# AIoD cloud native HW agent
+The AIoD cloud native HW agent is a complete PoC of a cloud-native (Kubernetes) AIoD HW agent. The cloud native HW agent will be deployed as a Demonset to the underlying Kubernetes cluster. The cloud native HW agent has been tested on a Sun Micro server with 8 NVIDIA GPUs.
+
+## Functionality
+The cloud native HW agent will:
+
+- Use existing Node Feature Discovery labels to create aiod specific labels (where applicable)
+- Add new NFD aiod specific labels using different techniques
+- Collect all the aiod specific labels and create a json formatted hw agent metadata description
+- Send the HW agent metadata description to the AIoD platform using a mock-up of the AIoD *computational_assets* API
+- Send the cluster credentials to the AIoD platform (allowing the AIoD platform to have full control of the cluster
+
+## Limitations
+The PoC has been developed on a single node cluster with NVIDIA GPUs and has not been tested on clusters with multiple nodes or other types of accelerators
+
+## Setup microk8s and deploy an application
 This is a small example of a kubernetes application that sets a Node Feature Discovery label. It has been tested on odin.
 
-## Install microk8s
+### Install microk8s
 ```
 sudo snap install microk8s --classic
 sudo usermod -a -G microk8s $USER
@@ -12,7 +27,7 @@ newgrp microk8s
 microk8s enable gpu
 ```
 
-## Optionally add support for remote access to the cluster
+### Optionally add support for remote access to the cluster
 It is convenient to have remote access to the cluster. Here is how to add that to your local host:
 ```
 # On the microk8s host
@@ -25,7 +40,7 @@ scp user@host:/path/config ~/.kube
 ```
 How to solve this in the real AIoD setting is TBD, but we will transfer the config to the AIoD platform
 
-## Build and deploy application that sets a NFD label to microk8s
+### Build and deploy application that sets a NFD label to microk8s
 Build the docker container and convert it (docker save) to tar format and import it into the microk8s containerd (doing it this way makes use of external docker repo unnecessary).
 ```
 docker build -t k8s-aiod-hw-agent:latest .
@@ -35,7 +50,7 @@ docker save k8s-aiod-hw-agent:latest | microk8s ctr image import -
 Deploy the containerised app:
 `microk8s kubectl apply -f deployment.yaml`
 
-## Other useful commands
+### Other useful commands
 **List the microk8s images:**
 `microk8s ctr images list`
 

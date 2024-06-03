@@ -10,6 +10,9 @@ The cloud native HW agent will:
 - Send the HW agent metadata description to the AIoD platform using a mock-up of the AIoD *computational_assets* API
 - Send the cluster credentials to the AIoD platform (allowing the AIoD platform to have full control of the cluster
 
+## Prerequsites
+The HW agent will use the AIoD *computational_asset* API to send a description of the resources available. This API is currently not conformant with the HW agent metadata model and can only receive a maximum of 1800 bytes of JSON formatted descriptions. It is therefore necessary to start the mock-up AIoD API to be able to run the cloud native HW agent succesfully. The AIoD mock-up API can be found [here](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/tree/main/nfd/AIoD-API-mock). The development of the mock-up API was part of Task 5.2 exploratory work.
+
 ## Limitations
 The PoC has been developed on a single node cluster with NVIDIA GPUs and has not been tested on clusters with multiple nodes or other types of accelerators
 
@@ -40,7 +43,7 @@ scp user@host:/path/config ~/.kube
 ```
 How to solve this in the real AIoD setting is TBD, but we will transfer the config to the AIoD platform
 
-### Build and deploy application that sets a NFD label to microk8s
+### Build and deploy the application that sets AIoD related NFD labels and sends a HW agent metadata description to the AIoD platform
 Build the docker container and convert it (docker save) to tar format and import it into the microk8s containerd (doing it this way makes use of external docker repo unnecessary).
 ```
 docker build -t k8s-aiod-hw-agent:latest .

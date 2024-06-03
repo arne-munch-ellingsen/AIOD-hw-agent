@@ -15,6 +15,8 @@ The cloud native HW agent will:
 - Send the cluster credentials to the AIoD platform (allowing the AIoD platform to have full control of the cluster
 
 ## Prerequsites
+The HW agent is deployed to a Kubernetes cluster and you will need a working cluster. We have used the microk8s Kubernetes distribution for our PoC and you can find details about how to install a microk8s cluster [here](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/blob/main/k8s-based-aiod-hw-agent/MICROK8S-README.md). 
+
 The HW agent will use the AIoD *computational_asset* API to send a description of the resources available. This API is currently not conformant with the HW agent metadata model and can only receive a maximum of 1800 bytes of JSON formatted descriptions. It is therefore necessary to start the mock-up AIoD API to be able to run the cloud native HW agent succesfully. The AIoD mock-up API can be found [here](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/tree/main/nfd/AIoD-API-mock). The development of the mock-up API was part of Task 5.2 exploratory work.
 
 The HW agent uses existing NFD labels and if the node has NVIDIA GPUs it is necessary to enable GPU usage in the cluster and install the NVIDIA GPU operator (that includes NFD). The file [NVIDIA-README.md](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/blob/main/k8s-based-aiod-hw-agent/NVIDIA-README.md) describes how to do this.

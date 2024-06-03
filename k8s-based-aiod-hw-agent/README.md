@@ -13,6 +13,8 @@ The cloud native HW agent will:
 ## Prerequsites
 The HW agent will use the AIoD *computational_asset* API to send a description of the resources available. This API is currently not conformant with the HW agent metadata model and can only receive a maximum of 1800 bytes of JSON formatted descriptions. It is therefore necessary to start the mock-up AIoD API to be able to run the cloud native HW agent succesfully. The AIoD mock-up API can be found [here](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/tree/main/nfd/AIoD-API-mock). The development of the mock-up API was part of Task 5.2 exploratory work.
 
+Note also that we added a few "mandatory" fields to the AIoD mock-up API and also added a num_gpus field to the HW agent metadata model.
+
 ## Limitations
 The PoC has been developed on a single node cluster with NVIDIA GPUs and has not been tested on clusters with multiple nodes or other types of accelerators
 

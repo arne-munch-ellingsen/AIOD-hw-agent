@@ -1,5 +1,9 @@
 # AIoD cloud native HW agent
-The AIoD cloud native HW agent is a complete PoC of a cloud-native (Kubernetes) AIoD HW agent. The cloud native HW agent will be deployed as a Demonset to the underlying Kubernetes cluster. The cloud native HW agent has been tested on a Sun Micro server with 8 NVIDIA GPUs.
+The AIoD cloud native HW agent is a complete PoC of a cloud-native (Kubernetes) AIoD HW agent. The cloud native HW agent will be deployed as a DemonSet to the underlying Kubernetes cluster. A Kubernetes DaemonSet ensures that a particular pod runs on all (or some) nodes in a cluster. Deploying the HW agent as a DeamonSet ensures that the HW agent will run and retreive hardware information on all nodes and by default automatically updates the AIoD platform if hardware configuration changes.
+
+The HW agent uses the Kubernetes Node Feature Discovery (NFD) mechanism. Kubernetes NFD is a mechanism that facilitates the automatic detection of hardware and software capabilities of (hardware) nodes in a Kubernetes cluster. It labels nodes with their respective features, making it easier to schedule pods based on specific node attributes.
+
+The cloud native HW agent has been tested on a Sun Micro server with 8 NVIDIA GPUs.
 
 ## Functionality
 The cloud native HW agent will:

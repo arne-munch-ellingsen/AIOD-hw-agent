@@ -16,6 +16,8 @@ The cloud native HW agent will:
 ### Limitations
 The PoC has been developed on a single node cluster with NVIDIA GPUs and has not been tested on clusters with multiple nodes or other types of accelerators
 
+### Video showing the cloud native HW agent in action
+The video file [Telenor_AI4Europe_5G-Edge-HW-agent-poc_video.mp4](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/blob/main/Telenor_AI4Europe_5G-Edge-HW-agent-poc_video.mp4) shows the PoC in action. 
 ## DMTF Redfish examples
 The [redfish](https://github.com/arne-munch-ellingsen/AIOD-hw-agent/tree/main/redfish) folder contains early examples for retrieving hardware properties for a server using the DMTF Redfish standardized __*lights out*__ remote access API. The Redfish API can be used in python through the __*redfish*__ package. This way of retrieving the hardware information will work remotely even when the server is turned off (hence the __*lights out*__ name). The Redfish API also contains API calls to control the (bare metal) server and could for example be used to boot an AIoD specific ISO image and manage network settings on the server. Handing the authentication and authorization credentials for Redfish to the AIoD platform will make it possible for the AIoD platform to remotely manage bare metal servers and lend them to users in the same way as Chameleon Cloud is doing it. [Chameleon Cloud](https://www.chameleoncloud.org) handles bare metal servers using Redfish through the OpenStack Ironic functionality. Ironic uses Redfish to handle remote servers.
 
